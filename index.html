@@ -313,13 +313,13 @@
     <div class="text-center max-w-lg w-full flex flex-col items-center">
         
         <div class="relative cursor-pointer group my-6 transform transition duration-500 hover:scale-105 active:scale-95" id="open-gift-trigger">
-            <div class="absolute -inset-6 bg-gradient-to-r from-pink-500 via-rose-400 to-purple-400 rounded-full blur-2xl opacity-80 group-hover:opacity-100 animate-pulse transition duration-700"></div>
+            <div class="absolute -inset-6 pointer-events-none bg-gradient-to-r from-pink-500 via-rose-400 to-purple-400 rounded-full blur-2xl opacity-80 group-hover:opacity-100 animate-pulse transition duration-700"></div>
             
             <!-- Girly Ribbon Gift Box -->
             <div class="relative w-52 h-52 bg-gradient-to-tr from-rose-400 via-pink-400 to-purple-300 rounded-3xl border-4 border-pink-200 shadow-2xl flex flex-col items-center justify-center overflow-hidden">
                 <!-- Golden Silk Ribbons -->
-                <div class="absolute w-10 h-full bg-gradient-to-b from-amber-200 via-yellow-300 to-amber-300 shadow-lg"></div>
-                <div class="absolute h-10 w-full bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-300 shadow-lg"></div>
+                <div class="absolute w-10 h-full pointer-events-none bg-gradient-to-b from-amber-200 via-yellow-300 to-amber-300 shadow-lg"></div>
+                <div class="absolute h-10 w-full pointer-events-none bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-300 shadow-lg"></div>
                 <!-- Cute Ribbon Bow Tie -->
                 <div class="absolute -top-4 w-20 h-14 bg-yellow-300 rounded-full border-2 border-white transform -rotate-12 shadow-lg flex items-center justify-center">
                     <span class="text-xs">✨</span>
@@ -664,6 +664,58 @@
 </div>
 
 <script>
+    // ==========================================
+    // SUPER MOBILE TOUCH SYSTEM (Zero Delay & 100% Responsive)
+    // ==========================================
+    function addTapEvent(el, handler) {
+        if (!el) return;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
+        // Desktop / Mouse support
+        el.addEventListener('click', (e) => {
+            if (e.pointerType !== 'touch') handler(e);
+        });
+        
+        // Mobile Touch support
+        el.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, {passive: true});
+        
+        el.addEventListener('touchend', (e) => {
+            const endX = e.changedTouches[0].screenX;
+            const endY = e.changedTouches[0].screenY;
+            // If finger barely moved, it's a tap!
+            if (Math.abs(endX - touchStartX) < 15 && Math.abs(endY - touchStartY) < 15) {
+                if (e.cancelable) e.preventDefault(); // Stop ghost clicks
+                
+                // Visual touch feedback for buttons
+                const originalTransform = el.style.transform;
+                el.style.transform = 'scale(0.95)';
+                setTimeout(() => el.style.transform = originalTransform, 150);
+                
+                handler(e);
+            }
+        });
+    }
+
+    // Convert all elements that currently use inline "onclick" to the new Tap System
+    setTimeout(() => {
+        document.querySelectorAll('[onclick]').forEach(el => {
+            const originalClickStr = el.getAttribute('onclick');
+            if (originalClickStr && !el.dataset.fastTap) {
+                el.dataset.fastTap = 'true';
+                el.removeAttribute('onclick'); // Remove old slow click
+                const handler = function(e) {
+                    const func = new Function('event', originalClickStr);
+                    func.call(el, e);
+                };
+                addTapEvent(el, handler);
+            }
+        });
+    }, 100); // Run right after DOM is fully ready
+
     // Initialize Lucide Icons
     lucide.createIcons();
 
@@ -1198,7 +1250,7 @@
         });
     }
 
-    document.getElementById('toggle-music-btn').addEventListener('click', toggleMusic);
+    addTapEvent(document.getElementById('toggle-music-btn'), toggleMusic);
 
     function spawnSparkleTrail(e) {
         // Prevent trails when interacting with inputs
@@ -1259,8 +1311,8 @@
         if (!isMusicPlaying) toggleMusic();
     }
 
-    document.getElementById('open-gift-trigger').addEventListener('click', triggerUnboxing);
-    document.getElementById('gift-direct-btn').addEventListener('click', triggerUnboxing);
+    addTapEvent(document.getElementById('open-gift-trigger'), triggerUnboxing);
+    addTapEvent(document.getElementById('gift-direct-btn'), triggerUnboxing);
 
     /* ==========================================================
        3. 3D Polaroid Memory Carousel Logic (10 Memories)
@@ -1420,8 +1472,8 @@
         updateCarouselPositions();
     }
 
-    document.getElementById('next-slide-btn').addEventListener('click', nextSlide);
-    document.getElementById('prev-slide-btn').addEventListener('click', prevSlide);
+    addTapEvent(document.getElementById('next-slide-btn'), nextSlide);
+    addTapEvent(document.getElementById('prev-slide-btn'), prevSlide);
 
     // Dynamic Photo Upload
     document.getElementById('photo-file-input').addEventListener('change', function(e) {
@@ -1447,7 +1499,7 @@
 
     // Auto Play
     const toggleAutoplayBtn = document.getElementById('toggle-autoplay-btn');
-    toggleAutoplayBtn.addEventListener('click', () => {
+    addTapEvent(toggleAutoplayBtn, () => {
         isAutoPlaying = !isAutoPlaying;
         if (isAutoPlaying) {
             autoPlayInterval = setInterval(nextSlide, 2000);
@@ -1622,17 +1674,17 @@
        STREAMING_CHUNK:Customization Modal & Sharing Handlers
        ========================================================== */
     const customizeModal = document.getElementById('customize-modal');
-    document.getElementById('edit-custom-btn').addEventListener('click', () => {
+    addTapEvent(document.getElementById('edit-custom-btn'), () => {
         customizeModal.classList.remove('hidden');
         document.getElementById('input-name').value = document.getElementById('display-name').innerText;
         document.getElementById('input-msg').value = document.getElementById('display-subtext').innerText;
     });
 
-    document.getElementById('close-modal-btn').addEventListener('click', () => {
+    addTapEvent(document.getElementById('close-modal-btn'), () => {
         customizeModal.classList.add('hidden');
     });
 
-    document.getElementById('save-customization-btn').addEventListener('click', () => {
+    addTapEvent(document.getElementById('save-customization-btn'), () => {
         const nameVal = document.getElementById('input-name').value.trim();
         const msgVal = document.getElementById('input-msg').value.trim();
         const secretVal = document.getElementById('input-secret').value.trim();
