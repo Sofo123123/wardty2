@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content = """<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -285,18 +285,18 @@
 
         <!-- Keypad (Numbers 1-9, Clear, 0, Backspace) -->
         <div class="grid grid-cols-3 gap-3 max-w-[260px] mx-auto select-none" dir="ltr">
-            <button onclick="inputPinDigit('1')" class="h-13 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition">1</button>
-            <button onclick="inputPinDigit('2')" class="h-13 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition">2</button>
-            <button onclick="inputPinDigit('3')" class="h-13 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition">3</button>
-            <button onclick="inputPinDigit('4')" class="h-13 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition">4</button>
-            <button onclick="inputPinDigit('5')" class="h-13 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition">5</button>
-            <button onclick="inputPinDigit('6')" class="h-13 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition">6</button>
-            <button onclick="inputPinDigit('7')" class="h-13 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition">7</button>
-            <button onclick="inputPinDigit('8')" class="h-13 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition">8</button>
-            <button onclick="inputPinDigit('9')" class="h-13 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition">9</button>
-            <button onclick="clearPin()" class="h-13 py-3 rounded-2xl glass-pink text-xs font-bold text-pink-300 hover:bg-pink-500/30 active:scale-90 transition">مسح</button>
-            <button onclick="inputPinDigit('0')" class="h-13 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition">0</button>
-            <button onclick="deletePinDigit()" class="h-13 py-3 rounded-2xl glass-pink text-base font-bold text-pink-300 hover:bg-pink-500/30 active:scale-90 transition">⌫</button>
+            <button type="button" onclick="inputPinDigit('1')" class="h-14 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition touch-manipulation cursor-pointer">1</button>
+            <button type="button" onclick="inputPinDigit('2')" class="h-14 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition touch-manipulation cursor-pointer">2</button>
+            <button type="button" onclick="inputPinDigit('3')" class="h-14 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition touch-manipulation cursor-pointer">3</button>
+            <button type="button" onclick="inputPinDigit('4')" class="h-14 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition touch-manipulation cursor-pointer">4</button>
+            <button type="button" onclick="inputPinDigit('5')" class="h-14 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition touch-manipulation cursor-pointer">5</button>
+            <button type="button" onclick="inputPinDigit('6')" class="h-14 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition touch-manipulation cursor-pointer">6</button>
+            <button type="button" onclick="inputPinDigit('7')" class="h-14 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition touch-manipulation cursor-pointer">7</button>
+            <button type="button" onclick="inputPinDigit('8')" class="h-14 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition touch-manipulation cursor-pointer">8</button>
+            <button type="button" onclick="inputPinDigit('9')" class="h-14 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition touch-manipulation cursor-pointer">9</button>
+            <button type="button" onclick="clearPin()" class="h-14 py-3 rounded-2xl glass-pink text-xs font-bold text-pink-300 hover:bg-pink-500/30 active:scale-90 transition touch-manipulation cursor-pointer">مسح</button>
+            <button type="button" onclick="inputPinDigit('0')" class="h-14 py-3 rounded-2xl glass-pink text-xl font-bold text-pink-50 hover:bg-pink-400/40 active:scale-90 transition touch-manipulation cursor-pointer">0</button>
+            <button type="button" onclick="deletePinDigit()" class="h-14 py-3 rounded-2xl glass-pink text-base font-bold text-pink-300 hover:bg-pink-500/30 active:scale-90 transition touch-manipulation cursor-pointer">⌫</button>
         </div>
     </div>
 </div>
@@ -1647,4 +1647,9 @@
     };
 </script>
 </body>
-</html>
+</html>"""
+
+with open("index_updated.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("[file-tag: index_updated.html]")
