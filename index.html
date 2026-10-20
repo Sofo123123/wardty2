@@ -209,6 +209,12 @@
             0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 1; }
             100% { transform: translate(calc(-50% + var(--tw-x)), calc(-50% + var(--tw-y))) scale(1.3) rotate(180deg); opacity: 0; }
         }
+    
+        /* Mobile Touch Optimizations */
+        button, a, .cursor-pointer, .flip-card, .candle, .soap-bubble, .floating-balloon, canvas {
+            touch-action: manipulation; /* يلغي تأخير الـ 300ms على الموبايل تماماً */
+            -webkit-tap-highlight-color: transparent; /* يمنع المربع الأزرق المزعج عند الضغط في الأندرويد/الآيفون */
+        }
     </style>
 </head>
 <body class="min-h-screen text-pink-50 relative selection:bg-pink-400 selection:text-white">
@@ -917,10 +923,13 @@
         `;
 
         // Interactive pop on click / tap with joyful pop sound
-        b.addEventListener('click', (e) => {
+        const popHandler = (e) => {
+            if(e.cancelable) e.preventDefault(); 
             e.stopPropagation();
             popBalloon(b);
-        });
+        };
+        b.addEventListener('mousedown', popHandler);
+        b.addEventListener('touchstart', popHandler, {passive: false});
 
         floatersContainer.appendChild(b);
 
@@ -964,10 +973,13 @@
         bubble.style.animationDelay = `${delay}s`;
 
         // Interactive pop
-        bubble.addEventListener('click', (e) => {
+        const popBubbleHandler = (e) => {
+            if(e.cancelable) e.preventDefault(); 
             e.stopPropagation();
             popSoapBubble(bubble);
-        });
+        };
+        bubble.addEventListener('mousedown', popBubbleHandler);
+        bubble.addEventListener('touchstart', popBubbleHandler, {passive: false});
 
         floatersContainer.appendChild(bubble);
 
@@ -1214,6 +1226,13 @@
     }
 
     window.addEventListener('click', spawnSparkleTrail);
+    window.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches.length > 0) {
+            e.clientX = e.touches[0].clientX;
+            e.clientY = e.touches[0].clientY;
+        }
+        spawnSparkleTrail(e);
+    }, {passive: true});
 
     function launchHugeConfetti() {
         if (typeof confetti === 'function') {
@@ -1588,7 +1607,10 @@
 
         canvas.ontouchstart = (e) => { isScratching = true; scratch(e); };
         window.ontouchend = () => isScratching = false;
-        canvas.ontouchmove = scratch;
+        canvas.ontouchmove = (e) => { 
+            if (isScratching && e.cancelable) e.preventDefault(); // يمنع تحرك الصفحة أثناء الخدش
+            scratch(e); 
+        };
     }
 
     function resetScratchCard() {
